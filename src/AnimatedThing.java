@@ -1,4 +1,5 @@
 import javafx.animation.AnimationTimer;
+import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -9,6 +10,7 @@ import java.util.Timer;
 
 //classe abstraite AnimatedThing :
 public abstract class AnimatedThing {
+    protected Camera camera;
     protected double x;
     protected double y;
     protected final double width;
@@ -23,9 +25,10 @@ public abstract class AnimatedThing {
     private double frameOffsetX;
     protected double frameOffsetY;
     protected AnimationTimer animationTimer;
-    public AnimatedThing(double x, double y,double width, double height, String fileName, int attitude, int frameIndex, int frameMaxIndex, int duration, int frameDuration, double frameOffsetX, double frameOffsetY) {
+    public AnimatedThing(Camera camera, Group root, double x, double y,double width, double height, String fileName, int attitude, int frameIndex, int frameMaxIndex, int duration, int frameDuration, double frameOffsetX, double frameOffsetY) {
         this.x = x;
         this.y = y;
+        this.camera = camera;
         this.width = width;
         this.height = height;
         this.attitude = attitude;
@@ -70,7 +73,7 @@ public abstract class AnimatedThing {
     public void update(long time) {}
 
     //le rectangle2D sur la spritesheet
-    public void updateViewport(int frameIndex, int attitude, double frameOffsetY, double height) {
+    public void updateViewport(int frameIndex, int attitude, double frameOffsetY, double width, double height) {
         Rectangle2D currentviewport = new Rectangle2D(frameIndex * width + frameOffsetX,attitude * height + frameOffsetY, width, height);
         imageView.setViewport(currentviewport);
     }
@@ -124,10 +127,23 @@ public abstract class AnimatedThing {
                 }
             }
             // Update the viewport based on the new index
-            updateViewport(frameIndex, attitude, frameOffsetY, height);
+            updateViewport(frameIndex, attitude, frameOffsetY, width, height);
         }
     }
-    public void renderProjectile(double deltaTime){
+    public void renderProjectile(double deltaTime) {
+        // Update the duration
+        frameDuration--;
+
+        // Check if it's time to change frames
+        if (frameDuration <= 0) {
+            // Reset the duration
+            frameDuration = duration;
+
+            frameIndex++;
+
+        }
+            // Update the viewport based on the new index
+            updateViewport(frameIndex, attitude, frameOffsetY, width, height);
 
     }
 }

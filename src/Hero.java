@@ -6,6 +6,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.util.ArrayList;
+
 public class Hero extends AnimatedThing {
     //Variables
     private final double initialX;
@@ -13,6 +15,8 @@ public class Hero extends AnimatedThing {
     private double jumpSpeed;
     private double jumpTopTime;
     private boolean isJumping;
+    private ArrayList<AnimatedThing> projectiles;
+    private Projectile redBeam;
     //Constants
     private final int IDLEFRAME_X = 0;
     private final int IDLEFRAME_Y = 1;
@@ -23,15 +27,19 @@ public class Hero extends AnimatedThing {
     private static final double JUMP_ACCELERATION_DOWN = 1200;
     private static final double JUMP_TOP_DURATION = 0.10;
     private static final double MAX_JUMP_HEIGHT = 100;
-    public Hero(double x, double y) {
+    public Hero(Camera camera, Group root, double x, double y) {
         //comme en CM : la ligne dessous appelle le constructeur de la classe parente AnimatedThing avec les mêmes paramètres
-        super(x, y,123,130, "ATSTspritesheet.png",0,0,5,8,8,0,0);
+        super(camera, root, x, y,123,130, "ATSTspritesheet.png",0,0,5,5,5,0,0);
         this.initialX = x;
         this.initialY = y;
         this.jumpSpeed = 0;
         this.jumpTopTime = 0;
         this.isJumping = false;
-        updateViewport(IDLEFRAME_X, IDLEFRAME_Y, frameOffsetY, height);
+
+        updateViewport(IDLEFRAME_X, IDLEFRAME_Y, frameOffsetY, width, height);
+
+        projectiles = new ArrayList<AnimatedThing>();
+        initRedBeam(root);
     }
     // Method for movement with direction
     public void movehero(double direction, double deltaTime) {
@@ -91,23 +99,42 @@ public class Hero extends AnimatedThing {
             }
         }
     }
+
     public void draw(Camera camera) {
         getImageView().setX(getX() - camera.getX() + WINDOWOFFSET_X);
         getImageView().setY(getY() - camera.getY());
      }
+
     // gauche : ((dir:1 + 1)/2) * WINDOW_OFFSET_X = WINDOW_OFFSET_X
     // droite : ((dir:-1 + 1)/2) * WINDOW_OFFSET_X = 0 * WINDOW_OFFSET_X = 0
     @Override
     public void renderHero(double deltaTime) {
-        //super.render(deltaTime);
         updateJump(deltaTime);
     }
+
     public void stop(int attitude){
         if(attitude == 0){ //gauche
-            updateViewport(frameIndex, attitude,frameOffsetY, height);
+            updateViewport(frameIndex, attitude,frameOffsetY, width, height);
         }
         if(attitude == 1){ //droite
-            updateViewport(frameIndex, attitude,frameOffsetY, height);
+            updateViewport(frameIndex, attitude,frameOffsetY, width, height);
         }
+    }
+
+    private void initRedBeam(Group root){
+        // Instantiate the hero
+        Projectile redBeam = new Projectile(camera, root, -500, getY(),8,5, getDirection(),100);
+        projectiles.add(redBeam);
+        root.getChildren().add(redBeam.getImageView());
+    }
+
+    public void render(double deltaTime) {
+
+
+
+
+        // Render the  at the camera position
+        redBeam.draw(camera);
+        redBeam.renderHero(deltaTime);
     }
 }

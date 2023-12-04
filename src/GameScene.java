@@ -17,7 +17,7 @@ public class GameScene extends Scene {
     private ImageView[] hearts; // un tableau d'ImageView pour afficher les coeurs
     private ArrayList<StaticThing> backgrounds;
     private ArrayList<AnimatedThing> animatedThings; // une liste d'objets animés
-    private Hero hero; // un objet de type Hero
+    private Hero hero;
     private static final double INITIAL_HERO_X = -500; // par rapport au background, pas au game screen
     private static final double INITIAL_HERO_Y = 750;
     private static final double BACKGROUND_WIDTH = 1200;
@@ -74,9 +74,10 @@ public class GameScene extends Scene {
     }
     private void initHero(Group root){
         // Instantiate the hero
-        hero = new Hero(INITIAL_HERO_X, INITIAL_HERO_Y);
+        hero = new Hero(camera, root, INITIAL_HERO_X, INITIAL_HERO_Y);
         root.getChildren().add(hero.getImageView());
     }
+
     // Method to handle click events
     private void handleClickPress(MouseButton button) {
         switch (button) {
