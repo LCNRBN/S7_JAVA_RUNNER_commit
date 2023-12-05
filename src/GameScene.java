@@ -8,6 +8,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.Group;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameScene extends Scene {
     private final Camera camera;
@@ -23,6 +24,7 @@ public class GameScene extends Scene {
     private static final double BACKGROUND_WIDTH = 1200;
     private static final double BACKGROUND_HEIGHT = 900;
     private static final String[] BACKGROUND_IMAGES = {"forêtEndor0.jpg", "forêtEndor1.jpg", "forêtEndor1_Reversed.png", "forêtEndor3.jpg", "forêtEndor3_Reversed.jpg", "forêtEndor2.jpg", "forêtEndor2_Reversed.jpg", "forêtEndor_end.jpg"}; // un tableau de noms de fichiers pour les arrière-plans
+    private static final int BACKGROUND_NBR = 20;
     private static final double HEART_WIDTH = 50;
     private static final double HEART_HEIGHT = 50;
     private static final String HEART_IMAGE = "coeur.png";
@@ -31,6 +33,7 @@ public class GameScene extends Scene {
         super (root, width, height);//classe parente Scene
 
         this.camera = camera;
+
         initBackgrounds(root);
         initHearts(root);
 
@@ -46,8 +49,10 @@ public class GameScene extends Scene {
     private void initBackgrounds(Group root){
         // On crée une liste d'objets StaticThing et on la remplit avec des arrière-plans
         backgrounds = new ArrayList<StaticThing>();
-        for (int i = 0; i < BACKGROUND_IMAGES.length; i++) {
-            StaticThing background = new StaticThing(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, BACKGROUND_IMAGES[i]);
+        for (int i = 0; i < BACKGROUND_NBR; i++) { // génère des backgrounds aléatoires
+            Random random = new Random();
+            int x = random.nextInt(BACKGROUND_IMAGES.length);
+            StaticThing background = new StaticThing(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, BACKGROUND_IMAGES[x]);
             background.getImageView().setX(i * BACKGROUND_WIDTH); // On décale l'arrière-plan selon son indice dans le tableau
             background.getImageView().setY(0);
             backgrounds.add(background);
@@ -119,6 +124,7 @@ public class GameScene extends Scene {
         // Render the hero at the camera position
         hero.draw(camera);
         hero.renderHero(deltaTime);
+
     }
     public Camera getGameCamera() {
         return camera;

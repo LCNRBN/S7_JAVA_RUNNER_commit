@@ -144,6 +144,5 @@ public abstract class AnimatedThing {
         }
             // Update the viewport based on the new index
             updateViewport(frameIndex, attitude, frameOffsetY, width, height);
-
     }
 }

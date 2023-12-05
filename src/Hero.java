@@ -39,7 +39,7 @@ public class Hero extends AnimatedThing {
         updateViewport(IDLEFRAME_X, IDLEFRAME_Y, frameOffsetY, width, height);
 
         projectiles = new ArrayList<AnimatedThing>();
-        initRedBeam(root);
+        initRedBeam(camera, root);
     }
     // Method for movement with direction
     public void movehero(double direction, double deltaTime) {
@@ -121,18 +121,14 @@ public class Hero extends AnimatedThing {
         }
     }
 
-    private void initRedBeam(Group root){
+    private void initRedBeam(Camera camera, Group root){
         // Instantiate the hero
-        Projectile redBeam = new Projectile(camera, root, -500, getY(),8,5, getDirection(),100);
+        Projectile redBeam = new Projectile(camera, root, -500, 750,8,5, getDirection(),100);
         projectiles.add(redBeam);
         root.getChildren().add(redBeam.getImageView());
     }
 
     public void render(double deltaTime) {
-
-
-
-
         // Render the  at the camera position
         redBeam.draw(camera);
         redBeam.renderHero(deltaTime);

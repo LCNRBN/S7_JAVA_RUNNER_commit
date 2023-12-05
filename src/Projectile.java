@@ -14,9 +14,7 @@ public class Projectile extends AnimatedThing {
     private double range;
     private boolean exploded;
     public Projectile(Camera camera, Group root, double x, double y, int duration, double speed, double direction, double range) {
-        // Appel du constructeur de la classe parente AnimatedThing avec les arguments appropriés
         super(camera, root , x, y, 29, 118, "explosion&beam.png", 0, 0, 0, duration, 8, 0, 0);
-        // Initialisation des variables d'instance de la classe Projectile
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -25,11 +23,11 @@ public class Projectile extends AnimatedThing {
         this.exploded = false;
 
         updateViewport(0, 0, 0, 0,0);
-        imageView.setX(x);
-        imageView.setY(y);
+        //imageView.setX(x);
+        //imageView.setY(y);
     }
 
-    @Override
+    /*@Override
     public void update(long time) {
         // Mise à jour de la position du projectile selon sa vitesse et sa direction
         x += speed * Math.cos(direction);
@@ -43,9 +41,9 @@ public class Projectile extends AnimatedThing {
             // Explosion du projectile
             explode();
         }
-    }
+    }*/
 
-    public void animateProjetile(double deltaTime) {
+    /*public void animateProjectile(double deltaTime) {
         // Appel de la méthode renderHero de la classe parente AnimatedThing
         super.renderProjectile(deltaTime);
         // Changement de l'image du projectile selon son état
@@ -56,7 +54,8 @@ public class Projectile extends AnimatedThing {
             // Image de projectile
             updateViewport(0, 0, frameOffsetY, width, height);
         }
-    }
+    }*/
+
 
     public void draw(Camera camera) {
         // Dessin du projectile sur le canvas selon sa position et la position de la caméra
@@ -64,7 +63,6 @@ public class Projectile extends AnimatedThing {
         //imageView.setY(y - camera.getY());
         getImageView().setX(x - camera.getX());
         getImageView().setY(y - camera.getY());
-
     }
 
     // Méthode propre à la classe Projectile qui vérifie la collision du projectile avec un obstacle ou un ennemi
